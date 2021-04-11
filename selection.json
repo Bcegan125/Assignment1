@@ -1,0 +1,45 @@
+{
+	"packs": [{
+			"id": 0,
+			"name": "Battle Styles",
+			"price": 4,
+			"image": "images/packs/Battle Styles.png",
+			"alt": "Battle Styles"
+		},
+		{
+            "id": 1,
+			"name": 'Vivid Voltage',
+            "price": 6,
+            "image": 'images/packs/Vivid Voltage.png',
+            "alt": 'Vivid Voltage'
+		},
+		{
+			"id": 2,
+            "name": "Darkness Ablaze",
+            "price": 4,
+            "image": "images/packs/darkness ablaze.png",
+            "alt": "Darkness Ablaze"
+		},
+		{
+			"id": 3,
+            "name": "Team Up",
+            "price": 8,
+            "image": "images/packs/Team Up.png",
+            "alt": "Team Up"
+		},
+		{
+			"id": 4,
+            "name": "Shiny Star V",
+            "price": 12,
+            "image": "images/packs/ssv.png",
+            "alt": "Shiny Star V"
+		},
+		{
+			"id": 5,
+            "name": "Matchless Fighters",
+            "price": 4,
+            "image": "images/packs/matchless fighters.png",
+            "alt": "Matchless Fighters"
+		}		
+	]
+}
