@@ -17,6 +17,10 @@ const Nav = (props) => {
     Your Orders
   </Menu.Item>
 
+  <Menu.Item as={NavLink} to="/users/12345678">
+        Your Account
+      </Menu.Item>
+
   </Menu>
   )
 };

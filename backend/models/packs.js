@@ -10,4 +10,4 @@ const packsSchema = new Schema({
     alt: { type: String, required: true }
 });
 
-module.exports = mongoose.model('Packs', packsSchema);
+module.exports = mongoose.model('Pack', packsSchema);
