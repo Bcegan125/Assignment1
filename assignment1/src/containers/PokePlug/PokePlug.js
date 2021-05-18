@@ -29,17 +29,32 @@ const PokePlug = (props) => {
       });
 
       useEffect(() => {
-        axios.get('/packs.json')
+        axios.get('/')
         .then(response => {
-          setSelectionState({packs: response.data});
-          console.log(response);
+          let sortedPacks = response.data.packs.sort(function(a, b){return a.id - b.id});
+          setSelectionState({packs: sortedPacks, error:false});
+        })
+        .catch(error => {
+          setSelectionState({packs: selectionState.packs, error: true});
+          console.log(error);
         });
     }, [])
 
-      const [orderState, setOrderState] = useState({
-        totalPrice: 0, 
-        chosenPacks: []
-      });
+    const [orderState, setOrderState] = useState({
+      totalPrice: 
+        props.location.state ? 
+        props.location.state.order.totalPrice : 5, 
+      chosenPacks: 
+        props.location.state ? 
+        props.location.state.order.chosenPacks: orderPacks
+    });  
+
+    if (props.location.state) {
+      orderPacks = props.location.state.order.chosenPacks;
+    }
+
+    window.history.replaceState('/', undefined);
+
 
       /*const addPacksHandler = (id) => {
         const index = selectionState.packs.findIndex(packs => packs.id === id);
@@ -150,42 +165,49 @@ const PokePlug = (props) => {
 
       const checkoutHandler = () => {
 
-            // get order from orderState
-      let order = orderState;
-
-      // add unique id
-      order.id = uuidv4();
-
-      // create formatted date
-      let orderDate = new Date();
-
-      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-      let dayNum = orderDate.getDay();
-      let day = days[dayNum];
-
-      let monthNum = orderDate.getMonth();
-      let month = months[monthNum];
-
-      let date = orderDate.getDate();
-      let year = orderDate.getFullYear();
-
-      // saves date in the format "Fri 19 Mar 2021"
-      let formattedDate = day + " " + date + " " + month + " " + year;
-
-      // add formattedDate to order
-      order.date = formattedDate;
-
-         axios.post('/orders.json', orderState)
-        .then(response => {
-            alert('Pack order saved!');
-            setOrderState({
-              totalPrice: 0,
-              chosenPacks: []
-            });
-            orderPacks=[];
+        props.history.push({
+          pathname: 'place-order', 
+          state: {
+            order: orderState, 
+            selection: selectionState.packs
+          }
         });
+      //       // get order from orderState
+      // let order = orderState;
+
+      // // add unique id
+      // order.id = uuidv4();
+
+      // // create formatted date
+      // let orderDate = new Date();
+
+      // const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      // const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+      // let dayNum = orderDate.getDay();
+      // let day = days[dayNum];
+
+      // let monthNum = orderDate.getMonth();
+      // let month = months[monthNum];
+
+      // let date = orderDate.getDate();
+      // let year = orderDate.getFullYear();
+
+      // // saves date in the format "Fri 19 Mar 2021"
+      // let formattedDate = day + " " + date + " " + month + " " + year;
+
+      // // add formattedDate to order
+      // order.date = formattedDate;
+
+      //    axios.post('/orders.json', orderState)
+      //   .then(response => {
+      //       alert('Pack order saved!');
+      //       setOrderState({
+      //         totalPrice: 0,
+      //         chosenPacks: []
+      //       });
+      //       orderPacks=[];
+      //   });
     }
       
 
