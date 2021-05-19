@@ -44,7 +44,7 @@ const PokePlug = (props) => {
     const [orderState, setOrderState] = useState({
       totalPrice: 
         props.location.state ? 
-        props.location.state.order.totalPrice : 5, 
+        props.location.state.order.totalPrice : 0, 
       chosenPacks: 
         props.location.state ? 
         props.location.state.order.chosenPacks: orderPacks

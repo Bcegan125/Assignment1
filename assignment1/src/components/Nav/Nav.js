@@ -18,25 +18,26 @@ const Nav = (props) => {
   </Menu.Item>
 
   {auth.isLoggedIn && (
-        <Menu.Item as={NavLink} to="/orders">
+        <Menu.Item as={NavLink} to={`/orders/${auth.userId}`}>
           Your Orders
         </Menu.Item>
       )}
 
-      {auth.isLoggedIn && (
-        <Menu.Item as={NavLink} to="/users/12345678">
+{auth.isLoggedIn && (
+        <Menu.Item as={NavLink} to={`/users/${auth.userId}`}>
           Your Account
         </Menu.Item>
       )}
 
 {!auth.isLoggedIn && (
         <Menu.Menu position="right">
-          <Menu.Item as={NavLink} to="/authenticate" onClick={auth.login}>
+          <Menu.Item as={NavLink} to="/authenticate">
             Signup/Login
           </Menu.Item>
         </Menu.Menu>
       )}
-          {auth.isLoggedIn && (
+
+      {auth.isLoggedIn && (
         <Menu.Menu position="right">
           <Menu.Item as={Link} to="/" onClick={auth.logout}>
             Log out

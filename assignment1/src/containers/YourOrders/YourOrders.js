@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from '../../axios-orders';
 import OrdersTable from '../../components/OrdersTable/OrdersTable';
 import { Message } from 'semantic-ui-react';
+import AuthContext from "../../context/auth-context";
+
 
 const YourOrders = (props) => {
-    const [pastOrdersState, setPastOrdersState] = useState({
-        orders: [],
+  const auth = useContext(AuthContext);  
+  const [pastOrdersState, setPastOrdersState] = useState({
+
+      orders: [],
         ordersLoaded: false,
         error: false
       });
 
       useEffect(() => {
-        axios.get('/orders')
+                let uid = auth.userId;
+        let path = "/orders/" + uid;
+        axios.get(path, { headers: { Authorization: "Bearer " + auth.token } })
         .then(response => {
           setPastOrdersState({
               orders: response.data.orders, 

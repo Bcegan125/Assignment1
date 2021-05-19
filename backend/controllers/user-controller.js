@@ -152,6 +152,73 @@ const usersController = {
           });
       },
 
+      async updateUser(request, response, next) {
+
+        const { name, email, password } = request.body;
+        const userId = request.params.uid;
+    
+        let user;
+        try {
+          user = await User.findById(userId);
+        } catch (err) {
+          const error = new HttpError(
+            "Something went wrong, could not update user.",
+            500
+          );
+          return next(error);
+        }
+    
+        let hashedPassword;
+        try {
+          hashedPassword = await bcrypt.hash(password, 12);
+        } catch (err) {
+          const error = new HttpError(
+            "Something went wrong, could not update user.",
+            500
+          );
+          return next(error);
+        }
+    
+        user.name = name;
+        user.email = email;
+        user.password = hashedPassword;
+    
+        try {
+          await user.save();
+        } catch (err) {
+          const error = new HttpError(
+            "Something went wrong, could not update user.",
+            500
+          );
+          return next(error);
+        }
+    
+        response.status(200).json({ user: user.toObject({ getters: true }) });
+      },
+
+      async deleteUser(request, response, next) {
+        const userId = request.params.uid;
+    
+        let user;
+        try {
+          user = await User.findById(userId);
+        } catch (err) {
+          const error = new HttpError("Could not find a user with this id.", 500);
+          return next(error);
+        }
+    
+        try {
+          await User.findByIdAndDelete(userId);
+        } catch (err) {
+          const error = new HttpError(
+            "Something went wrong, could not delete user.",
+            500
+          );
+          return next(error);
+        }
+    
+        response.status(200).json({ message: "User was deleted!" });
+      },
 };
 
 module.exports = usersController;

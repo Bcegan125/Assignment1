@@ -1,24 +1,43 @@
-import React from "react";
-import { Grid } from 'semantic-ui-react';
-import Controls from './Controls/Controls';
-import Checkout from './Checkout/Checkout';
+import { Grid, Header, Button, Dimmer } from "semantic-ui-react";
+import Controls from "./Controls/Controls";
+import Checkout from "./Checkout/Checkout";
+import React, { useContext } from "react";
+import AuthContext from "../../context/auth-context";
+import { Link } from 'react-router-dom';
 
 const Order = (props) => {
-    return (
+
+  const auth = useContext(AuthContext);
+  let active = !auth.isLoggedIn;
+
+  return (
+    <Grid.Row>
+      <Dimmer.Dimmable as={Grid} blurring dimmed={active}>
         <Grid.Row columns={2} centered>
-          <Controls 
-    selection={props.selection}
-    packsAdded = {props.packsAdded}
-    packsRemoved = {props.packsRemoved}
-  />
-          <Checkout 
-    selection = {props.selection}
-    packs={props.chosenPacks}
-    price={props.totalPrice}
-    checkout={props.checkout}
-    disabled={props.disabled}
-  />
+          <Controls
+            selection={props.selection}
+            packsAdded={props.packsAdded}
+            packsRemoved={props.packsRemoved}
+          />
+          <Checkout
+            selection={props.selection}
+            packs={props.chosenPacks}
+            price={props.totalPrice}
+            checkout={props.checkout}
+            disabled={props.disabled}
+          />
+        </Grid.Row>
+        <Dimmer active={active}>
+          <Header as="h2" inverted>
+            Log in to buy some packs!
+          </Header>
+          <Button as={Link} to="/authenticate" color="red" size="large">
+            Signup/Login
+          </Button>
+        </Dimmer>
+      </Dimmer.Dimmable>
     </Grid.Row>
-      );
-    }
+  );
+};
+
 export default Order;

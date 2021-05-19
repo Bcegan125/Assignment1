@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Grid, Header, Segment, List, Image, Button, Icon, Confirm } from "semantic-ui-react";
 import axios from "../../axios-orders";
-
+import AuthContext from "../../context/auth-context";
 import Loader from "../../components/Feedback/Loader/Loader";
 import ErrorModal from "../../components/Feedback/ErrorModal/ErrorModal";
 
 const YourAccount = (props) => {
+
+  const auth = useContext(AuthContext);
 
   // ACCOUNT, ERROR AND LOADING STATE
   const [accountState, setAccountState] = useState({
@@ -29,10 +31,10 @@ const YourAccount = (props) => {
 
   // FETCH ACCOUNT DETAILS
   useEffect(() => {
-    let uid = "12345678"; //replace with actual user id
+    let uid = auth.userId; 
     let path = "/users/" + uid;
     axios
-      .get(path)
+      .get(path,  { headers: { Authorization: "Bearer " + auth.token } })
       .then((response) => {
         setAccountState({ user: response.data.user });
       })
@@ -59,12 +61,13 @@ const YourAccount = (props) => {
   };
 
   const deleteHandler = () => {
-    let uid = "12345678";
+    let uid = auth.userId;
     let path = "/deleteuser/" + uid;
     axios
-      .delete(path)
+      .delete(path, { headers: { Authorization: "Bearer " + auth.token } })
       .then((response) => {
         console.log("User deleted!");
+        auth.logout();
         props.history.push("/");
       })
       .catch((error) => {
@@ -163,7 +166,7 @@ const YourAccount = (props) => {
                 </Grid.Column>
                 <Grid.Column width={8} textAlign="center">
                   <Image
-                    src="https://img.jamieoliver.com/jamieoliver/recipe-database/oldImages/large/1474_2_1430128688.jpg?tr=w-800,h-1066"
+                    src="https://images-na.ssl-images-amazon.com/images/I/51vmsCbLu9L._AC_SY450_.jpg"
                     rounded
                     size="large"
                   />

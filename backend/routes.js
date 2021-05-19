@@ -12,6 +12,10 @@ router.get('/orders', orderController.getAllOrders);
 router.get('/users/:uid', userController.getUserById);
 router.post('/signup', userController.signup);
 router.post('/login', userController.login);
+router.get('/orders/:uid', orderController.getOrdersByUserId);
+router.put('/updateuser/:uid', userController.updateUser);
+router.delete('/deleteuser/:uid', userController.deleteUser);
 router.use(checkAuth);
+
 
 module.exports = router;
